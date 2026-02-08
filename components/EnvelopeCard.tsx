@@ -92,7 +92,7 @@ export function EnvelopeCard({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[70] bg-black/40 backdrop-blur-md safe-px"
+            className="fixed inset-0 z-[70] bg-black/40 backdrop-blur-md safe-px safe-pb py-6 grid place-items-center"
             onClick={() => setSheet(false)}
           >
             <motion.div
@@ -100,7 +100,7 @@ export function EnvelopeCard({
               animate={{ y: 0, opacity: 1, scale: 1 }}
               exit={{ y: 30, opacity: 0, scale: 0.98 }}
               transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
-              className="absolute bottom-4 left-4 right-4 mx-auto max-w-[520px] overflow-hidden rounded-[34px]
+              className="relative w-full max-w-[520px] overflow-hidden rounded-[34px]
                 border border-black/10 bg-white/92 shadow-[0_40px_140px_rgba(0,0,0,.28)] backdrop-blur-xl text-[var(--ink)]"
               onClick={(e) => e.stopPropagation()}
             >

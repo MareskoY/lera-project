@@ -83,46 +83,32 @@ export function PhotoStack({
           );
         })}
 
-        {/* Switcher overlay: above photo cards (so blur/glass never covers it) */}
+        {/* Side arrows (no bottom controls; fits on mobile) */}
         {photos.length > 1 ? (
-          <div className="absolute inset-x-0 -bottom-28 z-[120] flex items-center justify-center">
-            <div
-              className="pointer-events-auto inline-flex items-center gap-3 rounded-full border border-white/45 bg-white/45 px-3 py-2
-                backdrop-blur-2xl shadow-[0_18px_60px_rgba(0,0,0,.20)]"
+          <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-[120]">
+            <button
+              type="button"
+              onClick={() => setActive((v) => (v - 1 + photos.length) % photos.length)}
+              className="pointer-events-auto absolute left-2 top-1/2 -translate-y-1/2 grid h-11 w-11 place-items-center rounded-full
+                border border-white/35 bg-white/40 text-lg font-semibold backdrop-blur-2xl shadow-[0_18px_60px_rgba(0,0,0,.20)]
+                hover:bg-white/55 transition"
+              aria-label="Предыдущее фото"
             >
-              <button
-                type="button"
-                onClick={() => setActive((v) => (v - 1 + photos.length) % photos.length)}
-                className="rounded-full border border-white/25 bg-white/35 px-4 py-2 text-sm font-semibold backdrop-blur-2xl
-                  hover:bg-white/45 transition"
-                aria-label="Предыдущее фото"
-              >
-                ←
-              </button>
-              <div className="flex items-center gap-1 px-1">
-                {photos.map((_, i) => (
-                  <div
-                    key={i}
-                    className={`h-2 rounded-full transition-all ${i === active ? "w-6 bg-white/95" : "w-2 bg-white/65"}`}
-                  />
-                ))}
-              </div>
-              <button
-                type="button"
-                onClick={() => setActive((v) => (v + 1) % photos.length)}
-                className="rounded-full border border-white/25 bg-white/35 px-4 py-2 text-sm font-semibold backdrop-blur-2xl
-                  hover:bg-white/45 transition"
-                aria-label="Следующее фото"
-              >
-                →
-              </button>
-            </div>
+              ←
+            </button>
+            <button
+              type="button"
+              onClick={() => setActive((v) => (v + 1) % photos.length)}
+              className="pointer-events-auto absolute right-2 top-1/2 -translate-y-1/2 grid h-11 w-11 place-items-center rounded-full
+                border border-white/35 bg-white/40 text-lg font-semibold backdrop-blur-2xl shadow-[0_18px_60px_rgba(0,0,0,.20)]
+                hover:bg-white/55 transition"
+              aria-label="Следующее фото"
+            >
+              →
+            </button>
           </div>
         ) : null}
       </div>
-
-      {/* Spacer so overlay doesn't visually crash into next content (and keeps no-scroll layout) */}
-      {photos.length > 1 ? <div className="h-1" /> : null}
     </div>
   );
 }
