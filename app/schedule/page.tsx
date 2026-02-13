@@ -64,6 +64,12 @@ export default function SchedulePage() {
   const step4Unlocked = step3Unlocked;
   const showHotelBlock = !schedule.hotelHidden;
 
+  const hotelUnlockLabel = useMemo(() => {
+    const hh = String(HOTEL_UNLOCK_LISBON.hour).padStart(2, "0");
+    const mm = String(HOTEL_UNLOCK_LISBON.minute).padStart(2, "0");
+    return `${hh}:${mm}`;
+  }, []);
+
   return (
     <div
       className="relative min-h-dvh safe-px safe-pb pb-8 overflow-hidden"
@@ -234,7 +240,7 @@ export default function SchedulePage() {
             locked={!step3Unlocked}
             lockedLabel={
               flowersResolved && readyOk && !hotelUnlocked
-                ? `откроется в 14:00 (PT) · осталось ${formatCountdown(msLeft)}`
+                ? `откроется в ${hotelUnlockLabel} (PT) · осталось ${formatCountdown(msLeft)}`
                 : "(пока заблокировано)"
             }
           >
@@ -255,7 +261,7 @@ export default function SchedulePage() {
                   {String(now.hour).padStart(2, "0")}:{String(now.minute).padStart(2, "0")}
                 </span>
                 {" · "}Откроется:{" "}
-                <span className="font-semibold text-[var(--ink)]">14:00</span>
+                <span className="font-semibold text-[var(--ink)]">{hotelUnlockLabel}</span>
               </div>
             ) : null}
 
