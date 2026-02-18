@@ -2,13 +2,14 @@
 
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
+import { useI18n } from "@/components/I18nProvider";
 
 export function LockedOverlay({
   open,
-  title = "Закрыто пока что",
+  title,
   description,
   backHref = "/achievements",
-  backLabel = "Вернуться",
+  backLabel,
 }: {
   open: boolean;
   title?: string;
@@ -16,6 +17,10 @@ export function LockedOverlay({
   backHref?: string;
   backLabel?: string;
 }) {
+  const { t } = useI18n();
+  const resolvedTitle = title ?? t("overlay.locked.title");
+  const resolvedBackLabel = backLabel ?? t("common.back");
+
   return (
     <AnimatePresence>
       {open ? (
@@ -40,7 +45,7 @@ export function LockedOverlay({
               </div>
               <div>
                 <div className="font-[var(--font-title)] text-2xl leading-[1.1]">
-                  {title}
+                  {resolvedTitle}
                 </div>
                 {description ? (
                   <div className="mt-2 text-sm leading-6 text-[var(--muted)]">
@@ -56,7 +61,7 @@ export function LockedOverlay({
                 className="flex-1 rounded-2xl border border-black/10 bg-white/60 px-4 py-3 text-center font-semibold
                   hover:bg-white/75 transition"
               >
-                ← {backLabel}
+                ← {resolvedBackLabel}
               </Link>
             </div>
           </motion.div>

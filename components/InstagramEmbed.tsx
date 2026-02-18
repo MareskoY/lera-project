@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
+import { useI18n } from "@/components/I18nProvider";
 
 declare global {
   interface Window {
@@ -52,6 +53,7 @@ export function InstagramEmbed({
 }) {
   const rootRef = useRef<HTMLDivElement>(null);
   const [failed, setFailed] = useState(false);
+  const { t } = useI18n();
 
   const permalink = useMemo(() => url.trim(), [url]);
 
@@ -80,7 +82,7 @@ export function InstagramEmbed({
       {failed ? (
         <div className="mt-4 rounded-3xl border border-white/25 bg-white/50 backdrop-blur-xl p-5">
           <div className="text-sm text-[var(--muted)]">
-            Встроенное видео не загрузилось — откроем в Instagram.
+            {t("instagram.failed.text")}
           </div>
           <div className="mt-4">
             <Link
@@ -88,7 +90,7 @@ export function InstagramEmbed({
               target="_blank"
               className="inline-flex items-center justify-center rounded-2xl bg-black/10 px-4 py-3 font-semibold hover:bg-black/15 transition"
             >
-              Смотреть → 
+              {t("instagram.failed.open")}
             </Link>
           </div>
         </div>

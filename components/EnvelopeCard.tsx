@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
+import { useI18n } from "@/components/I18nProvider";
 
 export function EnvelopeCard({
   title,
@@ -20,6 +21,7 @@ export function EnvelopeCard({
   certificateLink?: string;
   onOpened: () => void;
 }) {
+  const { t } = useI18n();
   const [sheet, setSheet] = useState(false);
   const [value, setValue] = useState("");
   const [error, setError] = useState("");
@@ -38,7 +40,9 @@ export function EnvelopeCard({
   const tryOpen = () => {
     const ok = value.trim().toLowerCase() === normalizedPassword;
     if (!ok) {
-      setError(hint ? `Неправильно. Подсказка: ${hint}` : "Неправильный пароль");
+      setError(
+        hint ? t("envelope.errorWrongWithHint", { hint }) : t("envelope.errorWrong"),
+      );
       setShake(true);
       window.setTimeout(() => setShake(false), 420);
       return;
@@ -60,7 +64,7 @@ export function EnvelopeCard({
         <div className="p-5">
           <div className="font-[var(--font-title)] text-2xl text-[var(--ink)]">{title}</div>
           <div className="mt-2 text-sm text-[var(--muted)]">
-            {opened ? "Открыто ✓" : "Нажми, чтобы открыть"}
+            {opened ? t("envelope.opened") : t("envelope.tapToOpen")}
           </div>
 
           <motion.div
@@ -109,7 +113,7 @@ export function EnvelopeCard({
                   <div>
                     <div className="font-[var(--font-title)] text-2xl text-[var(--ink)]">{title}</div>
                     <div className="mt-1 text-sm text-[var(--muted)]">
-                      {opened ? "Этот конверт уже открыт" : "Введи пароль и открой"}
+                      {opened ? t("envelope.alreadyOpened") : t("envelope.enterPassword")}
                     </div>
                   </div>
                   <button
@@ -117,7 +121,7 @@ export function EnvelopeCard({
                     onClick={() => setSheet(false)}
                     className="rounded-2xl border border-black/10 bg-white/85 px-3 py-2 text-sm font-semibold text-[var(--ink)] hover:bg-white/95 transition"
                   >
-                    Закрыть
+                    {t("common.close")}
                   </button>
                 </div>
 
@@ -130,7 +134,7 @@ export function EnvelopeCard({
                     <input
                       value={value}
                       onChange={(e) => setValue(e.target.value)}
-                      placeholder="Пароль…"
+                      placeholder={t("envelope.passwordPlaceholder")}
                       className="w-full rounded-2xl border border-black/15 bg-white/95 px-4 py-4 text-base text-[var(--ink)] placeholder:text-black/40 outline-none"
                       autoFocus
                     />
@@ -142,7 +146,7 @@ export function EnvelopeCard({
                       onClick={tryOpen}
                       className="mt-4 w-full rounded-2xl border border-black/10 bg-white/88 px-4 py-4 font-semibold text-[var(--ink)] hover:bg-white/96 transition"
                     >
-                      Открыть
+                      {t("envelope.open")}
                     </button>
                   </motion.div>
                 ) : (
@@ -153,10 +157,10 @@ export function EnvelopeCard({
                   >
                     <div className="grid place-items-center text-center gap-3">
                       <div className="font-[var(--font-title)] text-2xl text-[var(--ink)]">
-                        Готово ✓
+                        {t("envelope.done")}
                       </div>
                       <div className="text-sm leading-5 text-[var(--muted)] max-w-[44ch]">
-                        Проверь свою почту — сертификат уже там.
+                        {t("envelope.doneText")}
                       </div>
                       <div className="inline-flex rounded-full border border-black/10 bg-white/90 px-4 py-2 font-semibold text-[var(--ink)]">
                         leruakokur@gmail.com

@@ -18,7 +18,7 @@ export const GIFTS = {
     title: "Massimo Dutti",
     password: "5517",
     certificate: {
-      label: "TODO: вставить сертификат Massimo Dutti",
+      label: "TODO: add Massimo Dutti certificate",
       link: "",
     },
   },
@@ -26,7 +26,7 @@ export const GIFTS = {
     title: "Zara",
     password: "133333",
     certificate: {
-      label: "TODO: вставить сертификат Zara",
+      label: "TODO: add Zara certificate",
       link: "",
     },
   },

@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { LockedOverlay } from "@/components/LockedOverlay";
 import { PageTitle } from "@/components/PageTitle";
 import { TimelineStep } from "@/components/TimelineStep";
+import { useI18n } from "@/components/I18nProvider";
 import { EVENT_DATE_LISBON, HOTEL_UNLOCK_LISBON, PORTUGAL_TZ } from "@/lib/config";
 import { compareParts, formatCountdown, getZonedParts, partsToVirtualUtcMillis } from "@/lib/time";
 import { useProgressStore } from "@/lib/progressStore";
@@ -22,6 +23,7 @@ const HOTEL_PHOTOS = [
 ];
 
 export default function SchedulePage() {
+  const { t } = useI18n();
   const achievementsCompleted = useProgressStore((s) => s.achievementsCompleted);
   const schedule = useProgressStore((s) => s.schedule);
   const skipFlowers = useProgressStore((s) => s.skipFlowers);
@@ -139,18 +141,18 @@ export default function SchedulePage() {
       <div className="relative z-10">
         <LockedOverlay
           open={!achievementsCompleted && !preview}
-          title="Сначала — история"
-          description="Расписание откроется после того, как ты дойдёшь до конца «Твой путь»."
+          title={t("schedule.locked.title")}
+          description={t("schedule.locked.desc")}
           backHref="/achievements"
-          backLabel="к истории"
+          backLabel={t("schedule.locked.back")}
         />
 
-        <PageTitle title="Расписание" subtitle="Появляется по времени (Португалия)" />
+        <PageTitle title={t("schedule.title")} subtitle={t("schedule.subtitle")} />
 
         <div className="mx-auto grid w-full max-w-[760px] gap-4 pb-6">
         {!schedule.flowersSkipped ? (
           <TimelineStep
-            title="Цветы"
+            title={t("schedule.flowers.title")}
             icon="🌹"
             locked={false}
           >
@@ -160,7 +162,7 @@ export default function SchedulePage() {
                 onClick={skipFlowers}
                 className="rounded-2xl border border-black/10 bg-white/85 px-4 py-3 font-semibold text-[var(--ink)] hover:bg-white/95 transition"
               >
-                Я довольна
+                {t("schedule.flowers.ok")}
               </button>
               {!schedule.flowersComplained ? (
                 <button
@@ -168,7 +170,7 @@ export default function SchedulePage() {
                   onClick={complainFlowers}
                   className="rounded-2xl border border-black/10 bg-white/75 px-4 py-3 font-semibold text-[var(--ink)] hover:bg-white/90 transition"
                 >
-                  Оставить жалобу
+                  {t("schedule.flowers.complain")}
                 </button>
               ) : (
                 <motion.div
@@ -176,7 +178,7 @@ export default function SchedulePage() {
                   animate={{ opacity: 1, y: 0 }}
                   className="rounded-2xl bg-white/55 px-4 py-3 text-sm text-[var(--muted)]"
                 >
-                  Жалоба принята. Мы срочно повышаем уровень романтики на +12% ✨
+                  {t("schedule.flowers.accepted")}
                 </motion.div>
               )}
             </div>
@@ -185,17 +187,17 @@ export default function SchedulePage() {
 
         {!hotelUnlocked ? (
           <TimelineStep
-            title="Подготовься"
+            title={t("schedule.prepare.title")}
             icon="👜"
             locked={!flowersResolved}
-            lockedLabel="(пока заблокировано)"
+            lockedLabel={t("schedule.lockedLabel")}
           >
             <ul className="grid gap-2 text-sm text-[var(--muted)]">
               <li className="flex items-center gap-2">
-                <span>•</span> олд мани повседневная одежда
+                <span>•</span> {t("schedule.prepare.item1")}
               </li>
               <li className="flex items-center gap-2">
-                <span>•</span> купальник
+                <span>•</span> {t("schedule.prepare.item2")}
               </li>
             </ul>
             <div className="mt-4">
@@ -205,7 +207,7 @@ export default function SchedulePage() {
                 className="w-full rounded-2xl border border-black/10 bg-white/85 px-4 py-3 font-semibold text-[var(--ink)] hover:bg-white/95 transition disabled:opacity-45"
                 disabled={!flowersResolved || readyOk}
               >
-                {readyOk ? "Готово ✓" : "Я готова"}
+                {readyOk ? t("schedule.prepare.readyDone") : t("schedule.prepare.ready")}
               </button>
             </div>
           </TimelineStep>
@@ -216,17 +218,17 @@ export default function SchedulePage() {
           <div className="relative overflow-hidden rounded-[28px] border border-black/10 bg-white/80 backdrop-blur-xl shadow-[0_30px_80px_rgba(0,0,0,.14)]">
             <div className="p-5">
               <div className="font-[var(--font-title)] text-[clamp(26px,6vw,44px)] leading-[1.03] tracking-tight text-[var(--ink)]">
-                Твои подарки
+                {t("schedule.gifts.title")}
               </div>
               <div className="mt-2 text-sm text-[var(--muted)]">
-                Можно заглянуть, когда захочешь.
+                {t("schedule.gifts.subtitle")}
               </div>
               <div className="mt-4">
                 <Link
                   href="/gifts"
                   className="inline-flex w-full items-center justify-center rounded-2xl border border-black/10 bg-white/88 px-4 py-3 font-semibold text-[var(--ink)] hover:bg-white/96 transition"
                 >
-                  Посмотреть
+                  {t("schedule.gifts.open")}
                 </Link>
               </div>
             </div>
@@ -235,13 +237,16 @@ export default function SchedulePage() {
 
         {showHotelBlock ? (
           <TimelineStep
-            title="Сегодня ты проведёшь день и ночь тут:"
+            title={t("schedule.hotel.title")}
             icon="🏨"
             locked={!step3Unlocked}
             lockedLabel={
               flowersResolved && readyOk && !hotelUnlocked
-                ? `откроется в ${hotelUnlockLabel} (PT) · осталось ${formatCountdown(msLeft)}`
-                : "(пока заблокировано)"
+                ? t("schedule.hotel.unlockLabel", {
+                    time: hotelUnlockLabel,
+                    left: formatCountdown(msLeft),
+                  })
+                : t("schedule.lockedLabel")
             }
           >
             <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -256,11 +261,11 @@ export default function SchedulePage() {
             </div>
             {!hotelUnlocked ? (
               <div className="mt-4 rounded-2xl border border-black/10 bg-white/80 px-4 py-3 text-sm text-[var(--muted)] text-center">
-                Сейчас в Португалии:{" "}
+                {t("schedule.hotel.now")}{" "}
                 <span className="font-semibold text-[var(--ink)]">
                   {String(now.hour).padStart(2, "0")}:{String(now.minute).padStart(2, "0")}
                 </span>
-                {" · "}Откроется:{" "}
+                {" · "}{t("schedule.hotel.opens")}{" "}
                 <span className="font-semibold text-[var(--ink)]">{hotelUnlockLabel}</span>
               </div>
             ) : null}
@@ -271,39 +276,39 @@ export default function SchedulePage() {
                 onClick={hideHotel}
                 className="w-full rounded-2xl border border-black/10 bg-white/85 px-4 py-3 font-semibold text-[var(--ink)] hover:bg-white/95 transition"
               >
-                Скрыть блок отеля
+                {t("schedule.hotel.hide")}
               </button>
             </div>
           </TimelineStep>
         ) : null}
 
         <TimelineStep
-          title="Расписание"
+          title={t("schedule.agenda.title")}
           icon="📅"
           locked={!step4Unlocked}
-          lockedLabel="(пока заблокировано)"
+          lockedLabel={t("schedule.lockedLabel")}
         >
           <div className="grid gap-5">
             <div className="rounded-2xl border border-black/10 bg-white/82 p-4">
               <div className="inline-flex rounded-full border border-black/10 bg-white/95 px-3 py-1 font-[var(--font-title)] text-xl font-black text-[var(--ink)]">
-                13 февраля
+                {t("schedule.day1")}
               </div>
               <div className="mt-3 grid gap-2 text-sm text-[var(--muted)]">
-                <AgendaRow icon="🧳" label="Заезд" value="15:00" />
-                <AgendaRow icon="♨️" label="Спа" value="баня / сауна / хаммам / джакузи до 18:30" />
-                <AgendaRow icon="🍽️" label="Ужин" value="20:00" />
-                <AgendaRow icon="📸" label="Прогулка и фотосессия" value="до 22:00" />
+                <AgendaRow icon="🧳" label={t("schedule.agenda.checkin")} value="15:00" />
+                <AgendaRow icon="♨️" label={t("schedule.agenda.spa")} value={t("schedule.agenda.spaValue")} />
+                <AgendaRow icon="🍽️" label={t("schedule.agenda.dinner")} value="20:00" />
+                <AgendaRow icon="📸" label={t("schedule.agenda.walkPhoto")} value={t("schedule.agenda.walkPhotoValue")} />
               </div>
             </div>
 
             <div className="rounded-2xl border border-black/10 bg-white/82 p-4">
               <div className="inline-flex rounded-full border border-black/10 bg-white/95 px-3 py-1 font-[var(--font-title)] text-xl font-black text-[var(--ink)]">
-                14 февраля
+                {t("schedule.day2")}
               </div>
               <div className="mt-3 grid gap-2 text-sm text-[var(--muted)]">
-                <AgendaRow icon="🥐" label="Завтрак" value="9:30" />
-                <AgendaRow icon="🌿" label="Прогулка и утренняя фотосессия" value="10:30" />
-                <AgendaRow icon="🚗" label="Выезд" value="12:00" />
+                <AgendaRow icon="🥐" label={t("schedule.agenda.breakfast")} value="9:30" />
+                <AgendaRow icon="🌿" label={t("schedule.agenda.morningWalk")} value={t("schedule.agenda.morningWalkValue")} />
+                <AgendaRow icon="🚗" label={t("schedule.agenda.checkout")} value="12:00" />
               </div>
             </div>
           </div>

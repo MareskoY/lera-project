@@ -1,7 +1,9 @@
-import type { Metadata } from "next";
 import { Nunito, Rubik } from "next/font/google";
+import { cookies } from "next/headers";
 import "./globals.css";
 import { AppShell } from "@/components/AppShell";
+import { I18nProvider } from "@/components/I18nProvider";
+import { LANG_COOKIE, normalizeLang, t } from "@/lib/i18n";
 
 const titleFont = Rubik({
   variable: "--font-title",
@@ -14,21 +16,28 @@ const uiFont = Nunito({
   subsets: ["latin", "cyrillic"],
   weight: ["400", "500", "600", "700", "800", "900"],
 });
+export async function generateMetadata() {
+  const cookieStore = await cookies();
+  const lang = normalizeLang(cookieStore.get(LANG_COOKIE)?.value) ?? "ru";
+  return {
+    title: t(lang, "meta.title"),
+    description: t(lang, "meta.description"),
+  };
+}
 
-export const metadata: Metadata = {
-  title: "С Днём рождения, Лерик",
-  description: "Интерактивная открытка — история, расписание и подарки",
-};
-
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = await cookies();
+  const lang = normalizeLang(cookieStore.get(LANG_COOKIE)?.value) ?? "ru";
   return (
-    <html lang="ru">
+    <html lang={lang}>
       <body className={`${titleFont.variable} ${uiFont.variable} antialiased`}>
-        <AppShell>{children}</AppShell>
+        <I18nProvider lang={lang}>
+          <AppShell>{children}</AppShell>
+        </I18nProvider>
       </body>
     </html>
   );

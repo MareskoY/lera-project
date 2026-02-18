@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { useMemo, useState } from "react";
+import { useI18n } from "@/components/I18nProvider";
 import { useProgressStore } from "@/lib/progressStore";
 
 type MenuItem = {
@@ -15,17 +16,18 @@ type MenuItem = {
 export function FloatingMenu() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const { t } = useI18n();
 
   const achievementsCompleted = useProgressStore((s) => s.achievementsCompleted);
 
   const items: MenuItem[] = useMemo(
     () => [
-      { label: "История", href: "/achievements", enabled: true },
-      { label: "Расписание", href: "/schedule", enabled: achievementsCompleted },
+      { label: t("nav.story"), href: "/achievements", enabled: true },
+      { label: t("nav.schedule"), href: "/schedule", enabled: achievementsCompleted },
       // Requirement: gifts unlocked right after completing the story.
-      { label: "Подарки", href: "/gifts", enabled: achievementsCompleted },
+      { label: t("nav.gifts"), href: "/gifts", enabled: achievementsCompleted },
     ],
-    [achievementsCompleted],
+    [achievementsCompleted, t],
   );
 
   // Requirement: menu appears only after Achievements completed.
@@ -45,9 +47,9 @@ export function FloatingMenu() {
             ${open ? "border-black/10 bg-white/85" : "border-black/10 bg-white/70"}`}
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.98 }}
-          aria-label="Меню"
+          aria-label={t("nav.menuAria")}
         >
-          <span className="text-xs font-semibold text-black/90">Меню</span>
+          <span className="text-xs font-semibold text-black/90">{t("nav.menu")}</span>
           <motion.span
             aria-hidden="true"
             animate={{ rotate: open ? 180 : 0 }}

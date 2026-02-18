@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { useMemo, useRef, useState } from "react";
+import { useI18n } from "@/components/I18nProvider";
 
 export function PhotoStack({
   photos,
@@ -13,6 +14,7 @@ export function PhotoStack({
 }) {
   const [active, setActive] = useState(0);
   const touchStartX = useRef<number | null>(null);
+  const { t } = useI18n();
 
   const cards = useMemo(() => {
     const rot = [(-6 + Math.random() * 4) | 0, (2 + Math.random() * 5) | 0, (-2 + Math.random() * 4) | 0, (6 + Math.random() * 4) | 0];
@@ -92,7 +94,7 @@ export function PhotoStack({
               className="pointer-events-auto absolute left-2 top-1/2 -translate-y-1/2 grid h-11 w-11 place-items-center rounded-full
                 border border-white/35 bg-white/40 text-lg font-semibold backdrop-blur-2xl shadow-[0_18px_60px_rgba(0,0,0,.20)]
                 hover:bg-white/55 transition"
-              aria-label="Предыдущее фото"
+              aria-label={t("photos.prevAria")}
             >
               ←
             </button>
@@ -102,7 +104,7 @@ export function PhotoStack({
               className="pointer-events-auto absolute right-2 top-1/2 -translate-y-1/2 grid h-11 w-11 place-items-center rounded-full
                 border border-white/35 bg-white/40 text-lg font-semibold backdrop-blur-2xl shadow-[0_18px_60px_rgba(0,0,0,.20)]
                 hover:bg-white/55 transition"
-              aria-label="Следующее фото"
+              aria-label={t("photos.nextAria")}
             >
               →
             </button>

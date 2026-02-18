@@ -1,5 +1,7 @@
 "use client";
 
+import { useI18n } from "@/components/I18nProvider";
+
 export function TimelineStep({
   title,
   icon,
@@ -13,12 +15,14 @@ export function TimelineStep({
   lockedLabel?: string;
   children: React.ReactNode;
 }) {
+  const { t } = useI18n();
+
   if (locked) {
     return (
       <div className="relative overflow-hidden rounded-[28px] border border-black/10 bg-white/80 backdrop-blur-xl shadow-[0_30px_80px_rgba(0,0,0,.14)]">
         <div className="grid min-h-[160px] place-items-center p-6">
           <div className="mx-auto max-w-[36ch] rounded-[999px] bg-black/10 px-5 py-3 text-center text-sm font-semibold leading-5 text-[var(--muted)] whitespace-normal break-words">
-            {lockedLabel ?? "🔒 закрыто"}
+            {lockedLabel ?? t("timeline.locked")}
           </div>
         </div>
       </div>

@@ -1,8 +1,10 @@
+import type { MessageKey } from "@/lib/i18n";
+
 export type AchievementSlide =
   | {
       kind: "title";
-      title: string;
-      subtitle?: string;
+      titleKey: MessageKey;
+      subtitleKey?: MessageKey;
       bg: string;
       accent: string;
       hero?: { src: string; width?: number; height?: number; opacity?: number };
@@ -11,7 +13,7 @@ export type AchievementSlide =
     }
   | {
       kind: "photos";
-      title: string;
+      titleKey: MessageKey;
       text?: string;
       bg: string;
       accent: string;
@@ -21,7 +23,7 @@ export type AchievementSlide =
     }
   | {
       kind: "video";
-      title: string;
+      titleKey: MessageKey;
       text?: string;
       bg: string;
       accent: string;
@@ -31,7 +33,7 @@ export type AchievementSlide =
     }
   | {
       kind: "instagram";
-      title: string;
+      titleKey: MessageKey;
       text?: string;
       bg: string;
       accent: string;
@@ -42,13 +44,13 @@ export type AchievementSlide =
     }
   | {
       kind: "blogger";
-      title: string;
+      titleKey: MessageKey;
       bg: string;
       accent: string;
     }
   | {
       kind: "final";
-      title: string;
+      titleKey: MessageKey;
       bg: string;
       accent: string;
     };
@@ -57,30 +59,30 @@ export type AchievementSlide =
 export const ACHIEVEMENT_SLIDES: AchievementSlide[] = [
   {
     kind: "title",
-    title: "С днём рождения,\nЛерик!",
-    subtitle: "Я сделал для тебя маленькую интерактивную открытку ✨",
+    titleKey: "slides.0.title",
+    subtitleKey: "slides.0.subtitle",
     bg: "#f5dfc2",
     accent: "#c9746b",
     hero: { src: "/assets/gift.png", width: 720, height: 720, opacity: 1 },
   },
   {
     kind: "title",
-    title: "Тебе сегодня 32",
-    subtitle: "И это звучит безумно красиво",
+    titleKey: "slides.1.title",
+    subtitleKey: "slides.1.subtitle",
     bg: "#e6f5f1",
     accent: "#7b9173",
     hero: { src: "/assets/cake.png", width: 720, height: 720, opacity: 1 },
   },
   {
     kind: "title",
-    title: "И за это время ты:",
+    titleKey: "slides.2.title",
     bg: "#efd7fc",
     accent: "#6c99a3",
     hero: { src: "/assets/prize.png", width: 720, height: 720, opacity: 1 },
   },
   {
     kind: "photos",
-    title: "Переехала в Москву\nи справилась со всеми трудностями",
+    titleKey: "slides.3.title",
     bg: "#c9746b",
     accent: "#c9746b",
     photos: ["/assets/moscow-1.jpg", "/assets/moscow-2.jpg", "/assets/moscow-3.png"],
@@ -88,7 +90,7 @@ export const ACHIEVEMENT_SLIDES: AchievementSlide[] = [
   },
   {
     kind: "photos",
-    title: "Побывала в куче стран",
+    titleKey: "slides.4.title",
     bg: "#f7e3c3",
     accent: "#e3c08f",
     photos: [
@@ -105,7 +107,7 @@ export const ACHIEVEMENT_SLIDES: AchievementSlide[] = [
   },
   {
     kind: "photos",
-    title: "Переехала во Вьетнам",
+    titleKey: "slides.5.title",
     bg: "#e3917f",
     accent: "#fac1ac",
     photos: [
@@ -118,7 +120,7 @@ export const ACHIEVEMENT_SLIDES: AchievementSlide[] = [
   },
   {
     kind: "photos",
-    title: "Выучила английский,\nбудучи учителем английского",
+    titleKey: "slides.6.title",
     bg: "#f2b957",
     accent: "#fcf2ca",
     photos: ["/assets/teacher.jpg", "/assets/teacher-2.jpg"],
@@ -126,7 +128,7 @@ export const ACHIEVEMENT_SLIDES: AchievementSlide[] = [
   },
   {
     kind: "video",
-    title: "Стала графическим\nдизайнером",
+    titleKey: "slides.7.title",
     bg: "#dfeff6",
     accent: "#6c99a3",
     video: { src: "/assets/designer.mp4" },
@@ -134,7 +136,7 @@ export const ACHIEVEMENT_SLIDES: AchievementSlide[] = [
   },
   {
     kind: "video",
-    title: "Поступила в университет\nи переехала в Португалию",
+    titleKey: "slides.8.title",
     bg: "#c5dbe2",
     accent: "#6c99a3",
     video: { src: "/assets/university.mp4" },
@@ -142,7 +144,7 @@ export const ACHIEVEMENT_SLIDES: AchievementSlide[] = [
   },
   {
     kind: "video",
-    title: "Стала мамой собаки",
+    titleKey: "slides.9.title",
     bg: "#deddcc",
     accent: "#7b9173",
     video: { src: "/assets/chapa.mp4" },
@@ -150,20 +152,20 @@ export const ACHIEVEMENT_SLIDES: AchievementSlide[] = [
   },
   {
     kind: "blogger",
-    title: "Стала блогером",
+    titleKey: "slides.10.title",
     bg: "#D598E3",
     accent: "#E8C6EE",
   },
   {
     kind: "photos",
-    title: "И это всё ты",
+    titleKey: "slides.11.title",
     bg: "#f3d6c8",
     accent: "#c9746b",
     photos: ["/assets/lera-3.jpg", "/assets/lera-2.jpg", "/assets/lera-1.jpg"],
   },
   {
     kind: "final",
-    title: "Готова продолжить?",
+    titleKey: "slides.12.title",
     bg: "#fff7f0",
     accent: "#c9746b",
   },

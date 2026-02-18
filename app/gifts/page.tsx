@@ -3,10 +3,12 @@
 import { LockedOverlay } from "@/components/LockedOverlay";
 import { PageTitle } from "@/components/PageTitle";
 import { EnvelopeCard } from "@/components/EnvelopeCard";
+import { useI18n } from "@/components/I18nProvider";
 import { GIFTS } from "@/lib/config";
 import { useProgressStore } from "@/lib/progressStore";
 
 export default function GiftsPage() {
+  const { t } = useI18n();
   const achievementsCompleted = useProgressStore((s) => s.achievementsCompleted);
   const gifts = useProgressStore((s) => s.gifts);
   const openEnvelope = useProgressStore((s) => s.openEnvelope);
@@ -71,20 +73,20 @@ export default function GiftsPage() {
       <div className="relative z-10">
       <LockedOverlay
         open={locked}
-        title="Подарки ждут своего часа"
-        description="Сначала досмотри «Твой путь» — и конверты откроются."
+        title={t("gifts.locked.title")}
+        description={t("gifts.locked.desc")}
         backHref="/achievements"
-        backLabel="к истории"
+        backLabel={t("gifts.locked.back")}
       />
 
-      <PageTitle title="Подарки" subtitle="Один конверт. Один пароль. Один сюрприз." />
+      <PageTitle title={t("gifts.title")} subtitle={t("gifts.subtitle")} />
 
       <div className="mx-auto grid w-full max-w-[760px] gap-4">
         <EnvelopeCard
           title={GIFTS.envelope1.title}
           opened={gifts.envelope1Opened}
           password={GIFTS.envelope1.password}
-          hint="мой пароль"
+          hint={t("gifts.passwordHint")}
           certificateLabel={GIFTS.envelope1.certificate.label}
           certificateLink={GIFTS.envelope1.certificate.link || undefined}
           onOpened={() => openEnvelope("envelope1")}

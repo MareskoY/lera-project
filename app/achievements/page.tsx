@@ -15,12 +15,14 @@ import { DecorativeBackground } from "@/components/DecorativeBackground";
 import { InstagramEmbed } from "@/components/InstagramEmbed";
 import { PhotoStack } from "@/components/PhotoStack";
 import { ProgressDots } from "@/components/ProgressDots";
+import { useI18n } from "@/components/I18nProvider";
 import { readableTextOn } from "@/lib/color";
 import { ACHIEVEMENT_SLIDES } from "@/lib/achievementsSlides";
 import { useProgressStore } from "@/lib/progressStore";
 
 export default function AchievementsPage() {
   const router = useRouter();
+  const { t, lang } = useI18n();
   const slideIndex = useProgressStore((s) => s.achievementsSlideIndex);
   const setSlideIndex = useProgressStore((s) => s.setAchievementsSlideIndex);
   const completeAchievements = useProgressStore((s) => s.completeAchievements);
@@ -65,7 +67,7 @@ export default function AchievementsPage() {
         <div className="mx-auto flex w-full max-w-[760px] items-center justify-between gap-3">
           <div className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/20 px-3 py-2 backdrop-blur-md">
             <span className="text-xs font-semibold opacity-90" style={{ color: textColor }}>
-              Твой путь
+              {t("ach.header")}
             </span>
             <span className="text-[10px] opacity-70" style={{ color: textColor }}>
               •
@@ -88,17 +90,17 @@ export default function AchievementsPage() {
             className="text-center font-[var(--font-title)] title-stroke text-[clamp(28px,7vw,52px)] leading-[1.02] tracking-tight"
             style={{ color: textColor }}
           >
-            {slide.title.split("\n").map((l, i) => (
+            {t(slide.titleKey).split("\n").map((l, i) => (
               <div key={i}>{l}</div>
             ))}
           </motion.h1>
 
-          {"subtitle" in slide && slide.subtitle ? (
+          {"subtitleKey" in slide && slide.subtitleKey ? (
             <p
               className="mx-auto mt-2 max-w-[52ch] text-center text-[12px] leading-5 opacity-85"
               style={{ color: textColor }}
             >
-              {slide.subtitle}
+              {t(slide.subtitleKey)}
             </p>
           ) : null}
         </div>
@@ -174,7 +176,7 @@ export default function AchievementsPage() {
                     <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/0 via-black/0 to-black/12" />
                     <div className="absolute left-3 top-3">
                       <div className="rounded-full border border-white/25 bg-white/35 px-3 py-2 text-xs font-semibold backdrop-blur-2xl">
-                        видео
+                        {t("ach.videoBadge")}
                       </div>
                     </div>
                     <button
@@ -183,12 +185,12 @@ export default function AchievementsPage() {
                       className="absolute right-3 top-3 rounded-full border border-white/25 bg-white/35 px-3 py-2 text-xs font-semibold backdrop-blur-2xl hover:bg-white/45 transition"
                       style={{ color: textColor }}
                     >
-                      {videoMuted ? "🔇 звук" : "🔊 звук"}
+                      {videoMuted ? t("ach.soundOff") : t("ach.soundOn")}
                     </button>
                   </div>
                 </div>
                 <div className="mt-2 text-center text-[11px] leading-4 opacity-80" style={{ color: textColor }}>
-                  {videoMuted ? "Нажми «звук», если хочешь со звуком" : "Можно листать дальше — видео продолжит играть"}
+                  {videoMuted ? t("ach.soundHint.off") : t("ach.soundHint.on")}
                 </div>
               </div>
             ) : null}
@@ -217,7 +219,7 @@ export default function AchievementsPage() {
                 {slide.url.includes("PLACEHOLDER") ? (
                   <div className="mt-5 rounded-3xl border border-white/25 bg-white/40 backdrop-blur-xl p-5 text-center">
                     <div className="text-sm text-[var(--muted)]">
-                      Тут будет ещё один reel (добавишь ссылку позже).
+                      {t("ach.placeholderReel")}
                     </div>
                   </div>
                 ) : (
@@ -260,7 +262,7 @@ export default function AchievementsPage() {
                   className="w-full rounded-3xl bg-white/70 px-5 py-4 text-center font-semibold shadow-[0_30px_80px_rgba(0,0,0,.22)]
                     backdrop-blur-xl hover:bg-white/80 transition"
                 >
-                  Продолжить →
+                  {t("ach.continue")}
                 </motion.button>
                 <motion.button
                   type="button"
@@ -269,7 +271,7 @@ export default function AchievementsPage() {
                     backdrop-blur-xl hover:bg-white/30 transition"
                   style={{ color: textColor }}
                 >
-                  Посмотреть ещё раз
+                  {t("ach.watchAgain")}
                 </motion.button>
               </div>
             ) : null}
@@ -290,7 +292,7 @@ export default function AchievementsPage() {
               className="mb-3 text-center text-xs opacity-85"
               style={{ color: textColor }}
             >
-              Свайпни влево → (или кнопками ниже)
+              {t("ach.swipeHint")}
             </motion.div>
           ) : null}
         </AnimatePresence>
@@ -308,7 +310,7 @@ export default function AchievementsPage() {
               disabled:opacity-40 disabled:hover:bg-white/35"
             style={{ color: textColor }}
           >
-            ← Назад
+            {t("ach.back")}
           </button>
           {slideIndex < ACHIEVEMENT_SLIDES.length - 1 ? (
             <button
@@ -318,7 +320,7 @@ export default function AchievementsPage() {
                 shadow-[0_18px_60px_rgba(0,0,0,.20)] hover:bg-white/45 transition"
               style={{ color: textColor }}
             >
-              Далее →
+              {t("ach.next")}
             </button>
           ) : (
             <Link
@@ -328,7 +330,7 @@ export default function AchievementsPage() {
                 shadow-[0_18px_60px_rgba(0,0,0,.20)] hover:bg-white/45 transition"
               style={{ color: textColor }}
             >
-              К расписанию →
+              {t("ach.toSchedule")}
             </Link>
           )}
         </div>
@@ -501,7 +503,7 @@ function BloggerCard({
         className="mt-3 text-center font-[var(--font-title)] text-[20px] sm:text-[22px] font-black tracking-tight"
         style={{ color: textColor }}
       >
-        {shown.toLocaleString("ru-RU")}
+        {shown.toLocaleString(lang === "ru" ? "ru-RU" : "en-US")}
       </motion.div>
     </motion.a>
   );
