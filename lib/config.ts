@@ -5,11 +5,11 @@ export const PORTUGAL_TZ = "Europe/Lisbon";
 export const EVENT_DATE_LISBON = {
   year: 2026,
   month: 2,
-  day: 13,
+  day: 19,
 } as const;
 
 export const HOTEL_UNLOCK_LISBON = {
-  hour: 12,
+  hour: 14,
   minute: 0,
 } as const;
 
