@@ -79,11 +79,11 @@ export default function SchedulePage() {
         {
           // Force a light palette locally so components using CSS vars remain readable
           // even if OS prefers dark mode.
-          ["--ink" as any]: "#1b1b1b",
-          ["--muted" as any]: "rgba(27, 27, 27, 0.74)",
-          ["--paper" as any]: "#f7f2ea",
-          ["--paper-2" as any]: "#fff7f0",
-        } as React.CSSProperties
+          "--ink": "#1b1b1b",
+          "--muted": "rgba(27, 27, 27, 0.74)",
+          "--paper": "#f7f2ea",
+          "--paper-2": "#fff7f0",
+        } as unknown as React.CSSProperties
       }
     >
       {/* Background MUST be above the parent's background. Never use negative z here. */}

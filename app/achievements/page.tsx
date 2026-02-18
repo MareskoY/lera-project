@@ -31,30 +31,26 @@ export default function AchievementsPage() {
   const [dragHint, setDragHint] = useState(true);
   const touchStartX = useRef<number | null>(null);
   const [videoMuted, setVideoMuted] = useState(true);
+  const hintTimerRef = useRef<number | null>(null);
 
   const slide = ACHIEVEMENT_SLIDES[slideIndex] ?? ACHIEVEMENT_SLIDES[0];
   const textColor = useMemo(() => readableTextOn(slide.bg), [slide.bg]);
   const isIntro = slideIndex <= 2;
 
-  useEffect(() => {
-    // Show swipe hint longer, mainly on the first slide.
-    if (slideIndex !== 0) {
-      setDragHint(false);
-      return;
-    }
-    setDragHint(true);
-    const t = window.setTimeout(() => setDragHint(false), 5000);
-    return () => window.clearTimeout(t);
-  }, [slideIndex]);
-
-  useEffect(() => {
-    setVideoMuted(true);
-  }, [slideIndex]);
+  // (eslint rule) Don't set state synchronously inside effects.
+  // We handle "reset on navigation" inside `go()` instead.
 
   const go = (next: number) => {
     const clamped = Math.max(0, Math.min(ACHIEVEMENT_SLIDES.length - 1, next));
     setDir(clamped > slideIndex ? 1 : -1);
     setSlideIndex(clamped);
+    setVideoMuted(true);
+
+    if (clamped === 0) {
+      setDragHint(true);
+      if (hintTimerRef.current) window.clearTimeout(hintTimerRef.current);
+      hintTimerRef.current = window.setTimeout(() => setDragHint(false), 5000);
+    }
   };
 
   const goNext = () => go(slideIndex + 1);
@@ -239,6 +235,7 @@ export default function AchievementsPage() {
                   title="@leruakokur"
                   steps={[0, 125_000, 1_000_000]}
                   textColor={textColor}
+                  lang={lang}
                 />
                   <BloggerCard
                   href="https://www.instagram.com/valeriakokur/"
@@ -246,6 +243,7 @@ export default function AchievementsPage() {
                   title="@valeriakokur"
                   steps={[0, 56_700, 10_000_000]}
                   textColor={textColor}
+                  lang={lang}
                 />
                 </div>
               </div>
@@ -422,12 +420,14 @@ function BloggerCard({
   title,
   steps,
   textColor,
+  lang,
 }: {
   href: string;
   image: string;
   title: string;
   steps: number[];
   textColor: string;
+  lang: "ru" | "en";
 }) {
   const mv = useMotionValue(steps[0] ?? 0);
   const [shown, setShown] = useState<number>(steps[0] ?? 0);

@@ -23,11 +23,11 @@ export default function GiftsPage() {
         {
           // Force a light palette locally so input/text stays readable
           // even if OS prefers dark mode.
-          ["--ink" as any]: "#1b1b1b",
-          ["--muted" as any]: "rgba(27, 27, 27, 0.74)",
-          ["--paper" as any]: "#f7f2ea",
-          ["--paper-2" as any]: "#fff7f0",
-        } as React.CSSProperties
+          "--ink": "#1b1b1b",
+          "--muted": "rgba(27, 27, 27, 0.74)",
+          "--paper": "#f7f2ea",
+          "--paper-2": "#fff7f0",
+        } as unknown as React.CSSProperties
       }
     >
       {/* Background layer */}
@@ -87,8 +87,6 @@ export default function GiftsPage() {
           opened={gifts.envelope1Opened}
           password={GIFTS.envelope1.password}
           hint={t("gifts.passwordHint")}
-          certificateLabel={GIFTS.envelope1.certificate.label}
-          certificateLink={GIFTS.envelope1.certificate.link || undefined}
           onOpened={() => openEnvelope("envelope1")}
         />
       </div>

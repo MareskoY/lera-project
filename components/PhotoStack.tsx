@@ -5,6 +5,13 @@ import { motion } from "framer-motion";
 import { useMemo, useRef, useState } from "react";
 import { useI18n } from "@/components/I18nProvider";
 
+function hashString(s: string) {
+  // Deterministic (and pure) tiny hash for stable rotations.
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0;
+  return h;
+}
+
 export function PhotoStack({
   photos,
   frame = "postcard",
@@ -17,10 +24,13 @@ export function PhotoStack({
   const { t } = useI18n();
 
   const cards = useMemo(() => {
-    const rot = [(-6 + Math.random() * 4) | 0, (2 + Math.random() * 5) | 0, (-2 + Math.random() * 4) | 0, (6 + Math.random() * 4) | 0];
     return photos.map((src, i) => ({
       src,
-      rotate: rot[i % rot.length],
+      rotate: (() => {
+        const base = [-6, 2, -2, 6][i % 4] ?? 0;
+        const jitter = (Math.abs(hashString(src)) % 7) - 3; // -3..+3
+        return base + jitter;
+      })(),
       z: i,
     }));
   }, [photos]);

@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useI18n } from "@/components/I18nProvider";
 
 export function EnvelopeCard({
@@ -9,16 +9,12 @@ export function EnvelopeCard({
   opened,
   password,
   hint,
-  certificateLabel,
-  certificateLink,
   onOpened,
 }: {
   title: string;
   opened: boolean;
   password: string;
   hint?: string;
-  certificateLabel: string;
-  certificateLink?: string;
   onOpened: () => void;
 }) {
   const { t } = useI18n();
@@ -26,14 +22,12 @@ export function EnvelopeCard({
   const [value, setValue] = useState("");
   const [error, setError] = useState("");
   const [shake, setShake] = useState(false);
-
-  useEffect(() => {
-    if (!sheet) {
-      setValue("");
-      setError("");
-      setShake(false);
-    }
-  }, [sheet]);
+  const closeSheet = () => {
+    setSheet(false);
+    setValue("");
+    setError("");
+    setShake(false);
+  };
 
   const normalizedPassword = useMemo(() => password.trim().toLowerCase(), [password]);
 
@@ -97,7 +91,7 @@ export function EnvelopeCard({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[70] bg-black/40 backdrop-blur-md safe-px safe-pb py-6 grid place-items-center"
-            onClick={() => setSheet(false)}
+            onClick={closeSheet}
           >
             <motion.div
               initial={{ y: 30, opacity: 0, scale: 0.98 }}
@@ -118,7 +112,7 @@ export function EnvelopeCard({
                   </div>
                   <button
                     type="button"
-                    onClick={() => setSheet(false)}
+                    onClick={closeSheet}
                     className="rounded-2xl border border-black/10 bg-white/85 px-3 py-2 text-sm font-semibold text-[var(--ink)] hover:bg-white/95 transition"
                   >
                     {t("common.close")}
