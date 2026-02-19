@@ -185,12 +185,11 @@ export default function SchedulePage() {
           </TimelineStep>
         ) : null}
 
-        {!hotelUnlocked ? (
+        {flowersResolved ? (
           <TimelineStep
             title={t("schedule.prepare.title")}
             icon="👜"
-            locked={!flowersResolved}
-            lockedLabel={t("schedule.lockedLabel")}
+            locked={false}
           >
             <ul className="grid gap-2 text-sm text-[var(--muted)]">
               <li className="flex items-center gap-2">
@@ -205,7 +204,7 @@ export default function SchedulePage() {
                 type="button"
                 onClick={confirmReady}
                 className="w-full rounded-2xl border border-black/10 bg-white/85 px-4 py-3 font-semibold text-[var(--ink)] hover:bg-white/95 transition disabled:opacity-45"
-                disabled={!flowersResolved || readyOk}
+                disabled={readyOk}
               >
                 {readyOk ? t("schedule.prepare.readyDone") : t("schedule.prepare.ready")}
               </button>
@@ -286,7 +285,14 @@ export default function SchedulePage() {
           title={t("schedule.agenda.title")}
           icon="📅"
           locked={!step4Unlocked}
-          lockedLabel={t("schedule.lockedLabel")}
+          lockedLabel={
+            flowersResolved && readyOk && !hotelUnlocked
+              ? t("schedule.hotel.unlockLabel", {
+                  time: hotelUnlockLabel,
+                  left: formatCountdown(msLeft),
+                })
+              : t("schedule.lockedLabel")
+          }
         >
           <div className="grid gap-5">
             <div className="rounded-2xl border border-black/10 bg-white/82 p-4">

@@ -9,7 +9,7 @@ export const EVENT_DATE_LISBON = {
 } as const;
 
 export const HOTEL_UNLOCK_LISBON = {
-  hour: 14,
+  hour: 15,
   minute: 0,
 } as const;
 
